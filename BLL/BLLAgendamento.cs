@@ -14,5 +14,9 @@ namespace WebAPIArenaCactus.BLL
         {
             return new DALAgendamento().Cadastrar(data, idCredenciado, idCliente, idQuadra);
         }
+        public bool VerificarDisponibilidadeQuadra(DateTime data, int idQuadra, int idCredenciado)
+        {
+            return new DALAgendamento().VerificarDisponibilidadeQuadra(data, idQuadra, idCredenciado);
+        }
     }
 }

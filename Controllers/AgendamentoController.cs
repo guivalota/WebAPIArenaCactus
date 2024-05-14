@@ -16,5 +16,11 @@ namespace WebAPIArenaCactus.Controllers
         {
             return new BLLAgendamento().Cadastrar(data, idCredenciado, idCliente, idQuadra);
         }
+        [HttpGet("VerificaDisponibilidade")]
+        public bool VerificarDisponibilidadeQuadra(DateTime data, int idQuadra, int idCredenciado)
+        {
+            return new BLLAgendamento().VerificarDisponibilidadeQuadra(data, idQuadra, idCredenciado);
+        }
+
     }
 }

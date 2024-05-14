@@ -22,5 +22,11 @@ namespace WebAPIArenaCactus.Controllers
         {
             return new BLLClientes().CadastrarCliente(nome, email, cpf, telefone, senha, funcao);
         }
+
+        [HttpGet("PegarCliente")]
+        public string PegarCliente(int idClientes)
+        {
+            return new BLLClientes().PegarCliente(idClientes);
+        }
     }
 }
