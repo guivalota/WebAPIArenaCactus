@@ -1,40 +1,24 @@
-var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-var builder = WebApplication.CreateBuilder(args);
+using System.Net;
 
-// Add services to the container.
-
-builder.Services.AddCors(options =>
+namespace WebAPIArenaCactus
 {
-    options.AddPolicy(MyAllowSpecificOrigins,
-                          policy =>
-                          {
-                              policy.WithOrigins("http://*.*",
-                                                  "https://*.*")
-                                                  .AllowAnyHeader()
-                                                  .AllowAnyMethod()
-                                                  .AllowAnyOrigin();
-                          });
-});
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            var enderecoIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToString();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseUrls($"http://{enderecoIp}:9090");
+                    webBuilder.UseStartup<Startup>();
+                });
+        }
+    }
 }
-app.UseCors(MyAllowSpecificOrigins);
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
