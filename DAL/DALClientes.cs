@@ -1,6 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using System.Data.SqlClient;
-using WebAPIArenaCactus.BLL;
 using WebAPIArenaCactus.Models;
 
 namespace WebAPIArenaCactus.DAL
@@ -73,6 +71,33 @@ namespace WebAPIArenaCactus.DAL
             }
             return retorno;
         }
+
+        public string PegarCliente(int idClientes)
+        {
+            string retorno = "";
+            try
+            {
+                using (var conn = new MySqlConnection(new Connection().GetConnMySQL()))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT nome FROM clientes WHERE idclientes = @IdCliente");
+                    cmd.Parameters.AddWithValue("@IdCliente", idClientes);
+                    cmd.Connection = conn;
+                    using (var reader = cmd.ExecuteReader())
+                        while (reader.Read())
+                        {
+                            retorno = (string)reader["nome"];
+                        }
+                    conn.Close();
+                }
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+            return retorno;
+        }
+
 
         public string CadastrarCliente(string nome, string email, string cpf, string telefone, string senha, string funcao)
         {

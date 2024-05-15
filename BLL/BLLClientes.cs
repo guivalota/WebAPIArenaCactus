@@ -19,5 +19,10 @@ namespace WebAPIArenaCactus.BLL
         {
             return new DALClientes().CadastrarCliente(nome, email, cpf, telefone, senha, funcao);
         }
+
+        public string PegarCliente(int idClientes)
+        {
+            return new DALClientes().PegarCliente(idClientes);
+        }
     }
 }

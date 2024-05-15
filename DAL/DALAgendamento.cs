@@ -47,7 +47,7 @@ namespace WebAPIArenaCactus.DAL
         {
             string retorno = "";
             //Verificar Disponibilidade
-            if (VerificarDisponibilidadeQuadra(data, idQuadra))
+            if (VerificarDisponibilidadeQuadra(data, idQuadra, idCredenciado))
             {
                 retorno = "Quadra indisponivel nesse horario";
                 return retorno;
@@ -78,7 +78,7 @@ namespace WebAPIArenaCactus.DAL
             return retorno;
         }
 
-        private bool VerificarDisponibilidadeQuadra(DateTime data, int idQuadra)
+        public bool VerificarDisponibilidadeQuadra(DateTime data, int idQuadra, int idCredenciado)
         {
             bool retorno = false;
             try
@@ -86,9 +86,10 @@ namespace WebAPIArenaCactus.DAL
                 using (var conn = new MySqlConnection(new Connection().GetConnMySQL()))
                 {
                     conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM agendamento where data = @Data and idquadra = @IdQuadra");
+                    MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM agendamento where data = @Data and idquadra = @IdQuadra and idcredenciado = @IdCredenciado");
                     cmd.Parameters.AddWithValue("@Data", data);
                     cmd.Parameters.AddWithValue("@IdQuadra", idQuadra);
+                    cmd.Parameters.AddWithValue("@IdCredenciado", idCredenciado);
                     cmd.Connection = conn;
                     using (var reader = cmd.ExecuteReader())
                         while (reader.Read())
